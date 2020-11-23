@@ -79,7 +79,7 @@ public class ArrayPractice {
 		for(int i=0; i<n ; i++) {
 			arr[i] = sc.nextInt();
 		}
-		
+		//Test
 		//Left Rotate Array by some number {1,2,3,4,5,6} (d=2) => {3,4,5,6,1,2}
 //		rotate(arr,d,n); //  Time complexity =  O(n) and Space complexity = O(n)
 //		juggleRotate(arr,d,n); //  Time complexity =  O(n) and Space complexity = O(1)
