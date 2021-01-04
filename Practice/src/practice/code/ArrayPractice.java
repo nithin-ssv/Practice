@@ -540,16 +540,14 @@ public class ArrayPractice {
 		
 		//Sum of the elements from index 0 to that index = sum of the elements from that index (excluding it) till end of the array
 		
-		int[] leftArr = new int[n];
-		int leftSum=0,rightSum=0;
+		int leftSum=0,totalSum=0,rightSum=0;
 		for(int i=0;i<n;i++) {
-			leftSum = leftSum + arr[i];
-			leftArr[i]=leftSum;
+			totalSum = totalSum + arr[i];
 		}
 		
 		for(int i=0;i<n;i++) {
-			leftSum=leftArr[i];
-			rightSum = leftArr[n-1] - leftArr[i];
+			leftSum=leftSum+arr[i];
+			rightSum = totalSum - leftSum;
 			if(leftSum == rightSum) {
 				System.out.println("The equilibruim index is :"+i);
 				return;
