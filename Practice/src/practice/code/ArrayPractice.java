@@ -556,6 +556,60 @@ public class ArrayPractice {
 		System.out.println("Equilibruim index is not found.. ");
 	}
 	
+	public static void findIndexOfFirstOneInInfiniteArray(int arr[]) {
+		//Since we consider it as an infinite array, we don't pass the size and consider it as unknown
+		
+		int l=0,h=1;
+		while(arr[h]==0) {
+			l=h;
+			h=2*h;
+		}
+		
+		//when arr[h] ==1, if seen, we consider that as upper index  and apply binary search
+		
+		int low=l,high=h,mid=0;
+		
+		while(low<=high) {
+			
+			mid=(low+high)/2;
+			if(arr[mid]==1 && arr[mid-1]==0) {
+				break;
+			}
+			else if(arr[mid]==0) {
+				low=mid+1;
+			}else if(arr[mid]==1){
+				high=mid-1;
+			}
+			
+		}
+		
+		System.out.println("First 1 is found at index : "+mid);
+		
+	}
+	
+	public static void printMaximumOfEachSlidingWindowBruteForce(int arr[],int n) {
+
+		/** Time Complexity = O(nK) Space Complexity = O(1) **/
+		
+		System.out.println("Enter the window size:");
+		Scanner scanner = new Scanner(System.in);
+		int k = scanner.nextInt();
+		int windowMax=0;
+		
+		System.out.println("The values of window Max are : ");
+		
+		for(int i=0;i<=n-k;i++) {
+			windowMax=Integer.MIN_VALUE;
+			for(int j=i;j<i+k;j++) {
+				if(arr[j]>windowMax) {
+					windowMax=arr[j];
+				}
+			}
+			System.out.print(windowMax+" ");
+		}
+		
+	}
+	
 	public static void main(String args[]) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -610,7 +664,11 @@ public class ArrayPractice {
 		
 //		findingTripletWithGivenSum(arr,n);
 		
-		findEquilibruimIndexInGivenArray(arr,n);
+//		findEquilibruimIndexInGivenArray(arr,n);
+		
+//		findIndexOfFirstOneInInfiniteArray(arr);
+		
+		printMaximumOfEachSlidingWindowBruteForce(arr,n);
 		
 //		System.out.println("The output array is :");
 //		for(int i=0;i<n;i++) {
