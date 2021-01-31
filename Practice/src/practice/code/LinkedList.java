@@ -256,6 +256,340 @@ public class LinkedList {
 		
 	}
 	
+	public void printNthNodeFromLast(int pos) {
+		
+		Node slow=head,fast=head;
+		int i=0;
+		for( i=1; i<pos && fast!=null ; i++) {
+			fast = fast.next;
+		}
+		if(fast==null) {	
+			System.out.println(" Given list is small");
+			return;
+		}
+		while(fast.next!=null) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		
+		System.out.println("The data of the node at position "+pos+" from end is "+slow.data);
+		
+	}
+	
+	public void swapNodes(int from, int to) {
+		
+		Node start = head,end= head,preStart = null,preEnd = null;
+		for(int i=1;i<from && start!=null;i++) {
+			preStart = start;
+			start = start.next;
+		}
+		for(int i=1;i<to && end!=null;i++) {
+			preEnd = end;
+			end = end.next;
+		}
+		
+		if(start==null || end==null) {
+			System.out.println("Invalid Input");
+			return;
+		}
+		
+		Node temp = start.next;
+		if(preStart!=null) {
+			preStart.next = end;
+		}
+		
+		start.next = end.next;
+		preEnd.next = start;
+		end.next = temp;
+		
+		if(start == head) {
+			head = end;
+		}
+		
+		printList();
+		
+	}
+	
+	public void deleteDuplicatesInSortedLinkedList() {
+		
+		Node slow=head,fast=slow.next;
+		boolean duplicate = false;
+		
+		while(fast!=null) {
+			if(slow.data == fast.data) {
+				fast = fast.next;
+				duplicate = true;
+			}else if(duplicate) {
+				slow.next = fast;
+				duplicate = false;
+			}else {
+				fast = fast.next;
+				slow = slow.next;
+			}	
+		}
+		
+		if(duplicate) {
+			slow.next = fast;
+		}
+		
+		printList();
+	}
+	
+	public void moveLastNodeToFirst() {
+		
+		Node curr=head;
+		
+		while(curr.next.next != null) {
+			curr = curr.next;
+		}
+			
+		curr.next.next = head;
+		head = curr.next;
+		curr.next = null;
+		
+		printList();
+		
+	}
+	
+	public void isPalindrome() {
+		
+		Node first=head,second=head;
+	// finding the midpoint	
+		while(second.next!=null && second.next.next!=null) {
+			
+			first = first.next;
+			second = second.next.next;
+		}
+	
+	//reversing the second half
+		Node curr = first.next;
+		Node prev = reverseTheList(curr);
+		first.next = prev;
+		
+		printList();
+		
+	//checking the values	
+		Node temp = head;
+		first = first.next;
+		boolean isPalindrome = true;
+		while(first != null) {
+			if(temp.data != first.data) {
+				isPalindrome = false;
+				break;
+			}
+			first = first.next;
+			temp = temp.next;
+		}
+		
+		if(isPalindrome) {
+			System.out.println("\n\nGiven input is palindrome ..");
+		}else {
+			System.out.println("\n\nNot a palindrome ..");
+		}
+		
+		first=head;
+		second=head;
+		while(second.next!=null && second.next.next!=null) {
+			
+			first = first.next;
+			second = second.next.next;
+		}
+	//reversing back the second half
+		curr = first.next;
+		prev = reverseTheList(curr);
+		first.next = prev;
+		
+		printList();
+			
+	}
+	
+	public Node reverseTheList(Node curr) {
+		
+		Node prev=null;
+		Node temp = null;
+		
+		while(curr!=null) {
+			
+			temp = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = temp;
+		}
+		
+		return prev;
+	}
+	
+	public void intersectionPointOfTwoLists(Node head2) {
+	
+//		Using Two loops....
+		
+//		Node temp = head, sectemp = null;
+//		
+//		while(temp!=null) {
+//			
+//			sectemp = head2;
+//			while(sectemp !=null) {
+//				if(temp == sectemp) {
+//					System.out.println("Intersection point is found at "+temp.data);
+//					return;
+//				}
+//				sectemp = sectemp.next;
+//			}
+//			
+//			temp = temp.next;
+//		}
+//		
+//		System.out.println("No Intersection point.. ");
+//		Time Complexity = O(mn)
+		
+		Node temp = head, sectemp = head2;
+		int c1=0,c2=0;
+		
+		while(temp!=null) {
+			c1++;
+			temp = temp.next;
+		}
+		
+		while(sectemp !=null) {
+			c2++;
+			sectemp = sectemp.next;
+		}
+		
+		if(c1>c2) {
+			temp = head;
+			sectemp = head2;
+		}else {
+			temp = head2;
+			sectemp = head;
+		}
+		
+		int diff = MathUtil.abs(c1-c2);
+		
+		for(int i=0;i<diff;i++) {
+			temp = temp.next;
+		}
+		
+		while(temp!=null && sectemp!=null) {
+			
+			if(temp == sectemp) {
+				System.out.println("Intersection point is found at "+temp.data);
+				return;			
+			}
+			temp = temp.next;
+			sectemp = sectemp.next;
+		}
+		
+		System.out.println("No Intersection point.. ");
+
+		//		Time Complexity = O(m+n)	
+		
+	}
+	
+	public void segeregateOddAndEvenNodes() {
+		
+		// All Even nodes at the beginning and order among the even and odd numbers should be preserved
+		
+		Node lastNode = head,temp= head,prev = null;
+		
+		while(lastNode.next!=null) {
+			lastNode = lastNode.next;
+		}
+		
+		Node oddtemp = lastNode;
+		
+		while(temp!= lastNode) {
+			
+			if(temp.data % 2 != 0 ) {
+				
+				if(temp == head) {
+					oddtemp.next = temp;
+					oddtemp = temp;
+					temp = temp.next;
+					head = temp;
+				}else {
+					prev.next = temp.next;
+					oddtemp.next = temp;
+					oddtemp = temp;
+					temp = prev.next;
+				}
+				
+			}else {
+				prev = temp;
+				temp = temp.next;
+			}
+			
+		}
+		
+		if(lastNode.data %2 !=0 && lastNode.next!=null ) {
+			
+			if(prev!=null) {
+				prev.next = lastNode.next;
+			}else {
+				head = lastNode.next;
+			}
+			
+			oddtemp.next = lastNode;
+			oddtemp = lastNode;
+		}
+		
+		oddtemp.next = null;
+		
+		printList();
+		
+	}
+	
+	public void multiplyTwoNumbersRepresentedByLL(Node head2) {
+		
+		Node first = head, second= head2;
+		int firstNum=0,secondNum=0;
+		
+		while(first!=null) {
+			firstNum = firstNum*10 + first.data;
+			first = first.next;
+		}
+		
+		while(second!=null) {
+			secondNum = secondNum*10 + second.data;
+			second = second.next;
+		}
+		
+		System.out.println("The product is :"+ (firstNum*secondNum));
+		
+	}
+	
+	public void segregateOs1s2s() {
+		
+		Node temp = head;
+		int c0=0,c1=0,c2=0;
+		
+		while(temp!=null) {
+			if(temp.data == 0) {
+				c0++;
+			}else if(temp.data == 1) {
+				c1++;
+			}else if(temp.data == 2) {
+				c2++;
+			}
+			temp = temp.next;
+		}
+		
+		temp = head;
+		for(int i=0;i<c0;i++) {
+			temp.data = 0;
+			temp = temp.next;
+		}
+		for(int i=0;i<c1;i++) {
+			temp.data = 1;
+			temp = temp.next;
+		}
+		for(int i=0;i<c2;i++) {
+			temp.data = 2;
+			temp = temp.next;
+		}
+		
+		printList();
+	}
+	
 	public static void main(String[] args) {
 		
 		LinkedList list = new LinkedList();
@@ -270,6 +604,8 @@ public class LinkedList {
 			list.head = addNodeToList(data,list.head);
 		}
 		
+		list.printList();
+		
 //		list.deleteElement();		
 //		list.insertAtBeginning();
 //		list.deleteAtGivenPos();
@@ -282,9 +618,43 @@ public class LinkedList {
 //		deleteNodeWithOutHead(list.head.next.next.next);
 //		list.printList();
 		
-		list.printMiddleNode();
+//		list.printMiddleNode();
+//		list.printNthNodeFromLast(4);		
+//		list.swapNodes(1, 4);
+//		list.deleteDuplicatesInSortedLinkedList();
 		
+//		list.moveLastNodeToFirst();
+//		list.isPalindrome();
+
+/*		
+// 		Linked List intersection problem
+
+		Node head2=null;
+		System.out.println("\n\nEnter the size of the second list : ");
+		scanner = new Scanner(System.in);
+		size = scanner.nextInt();
+		System.out.println("\n\nEnter the elements of second List :");
 		
+		for(int i=0;i<size;i++) {
+			int data = scanner.nextInt();
+			head2 = addNodeToList(data,head2);
+		}
+		
+		Node temp = head2;
+		System.out.println("\n\nThe elements in the second list are :");
+		while(temp!=null) {
+			System.out.print(temp.data+" ");
+			temp = temp.next;
+		}
+		
+//		list.head.next.next.next.next = head2.next.next.next.next.next;		
+//		list.intersectionPointOfTwoLists(head2);	
+*/
+		
+//		list.segeregateOddAndEvenNodes();
+//		list.multiplyTwoNumbersRepresentedByLL(head2);
+		
+		list.segregateOs1s2s();
 		
 	}
 
