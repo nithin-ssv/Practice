@@ -215,6 +215,39 @@ public class CircularLinkedList {
 		printList();
 	}
 	
+	public void deleteAllNodesAtEvenPositionsInList() {
+		
+		Node prev = head, temp = head.next;
+		
+		do{
+			prev.next = temp.next;
+			temp.next = null;
+			prev = prev.next;
+			temp = prev.next;
+		}while(prev!=head && temp!=head);
+		
+		printList();
+		
+	}
+	
+	public void search(int d) {
+		
+		Node temp = head;
+		int count= 1;
+		do {
+			
+			if(temp.data == d) {
+				System.out.println("The given node is found at "+count);
+				return;
+			}
+			temp = temp.next;
+			count++;
+			
+		}while(temp!=head);
+		
+		System.out.print("Data not found..");
+	}
+	
 	public void findLuckyNode() {
 		
 		Node curr = head, temp = curr.next;
@@ -227,6 +260,46 @@ public class CircularLinkedList {
 		}
 		
 		System.out.print("The lucky node is : "+curr.data);
+		
+	}
+	
+	public void findMinAndMaxElementsFromList() {
+		
+		int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+		
+		Node temp = head;
+		
+		do {
+			int curData = temp.data;
+			if(curData>max) {
+				max = curData;
+			}
+			if(curData<min) {
+				min = curData;
+			}
+			temp = temp.next;
+		}while(temp!=head);
+		
+		System.out.print("\nThe min value is "+min+" and max value is "+max);
+		
+	}
+	
+	public void alternateFirstAndLastNodesInList() {
+		
+		Node temp = head,prev = null;
+		
+		while(temp.next!=head) {
+			prev = temp;
+			temp = temp.next;
+		}
+		Node oldhead = head;
+		
+		temp.next = head.next;
+		head = temp;
+		prev.next = oldhead;
+		oldhead.next = temp;
+		
+		printList();
 		
 	}
 	
@@ -263,6 +336,14 @@ public class CircularLinkedList {
 //		cll.deleteNodesAtOddPositionsInList();
 		
 //		cll.findLuckyNode();
+//		cll.deleteAllNodesAtEvenPositionsInList();
+		
+//		cll.search(5);
+		
+//		cll.findMinAndMaxElementsFromList();
+		
+//		cll.alternateFirstAndLastNodesInList();
+		
 	}
 
 }
