@@ -303,6 +303,29 @@ public class CircularLinkedList {
 		
 	}
 	
+	public void deleteEveryKthNode(int k){
+	
+		Node prev= head.next,temp = head.next.next;
+		int count=0;
+		while(prev!=temp) {
+			if(count<k-2) {
+				prev = temp;
+				temp = temp.next;
+				count++;
+			}else if(count==k-2) {
+				count=0;
+				prev.next = temp.next;
+				temp.next = null;
+				prev = prev.next;
+				if(temp == head) {
+					head = prev;
+				}
+				temp = prev.next;
+				printList();
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		System.out.println("Enter the no. of elements :");
@@ -343,6 +366,8 @@ public class CircularLinkedList {
 //		cll.findMinAndMaxElementsFromList();
 		
 //		cll.alternateFirstAndLastNodesInList();
+		
+		cll.deleteEveryKthNode(2);
 		
 	}
 
