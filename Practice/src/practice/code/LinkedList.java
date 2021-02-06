@@ -1,6 +1,7 @@
 package practice.code;
 
 import java.util.Scanner;
+import practice.code.MathUtil;
 
 class Node{
 	
