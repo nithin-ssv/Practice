@@ -1,4 +1,10 @@
 /Test.class
 /MathUtil.class
 /ArrayPractice.class
+<<<<<<< HEAD
 /ArrayPracticeUtil.class
+=======
+/LinkedList.class
+/LinkedList$Node.class
+/Node.class
+>>>>>>> branch 'master' of https://github.com/nithin-ssv/Practice.git
