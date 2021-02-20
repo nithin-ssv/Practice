@@ -7,9 +7,11 @@ class Node{
 	
 	int data;
 	Node next;
+//	Node arbit;
 	Node(int d){
 		data = d;
 		next = null;
+//		arbit = null;
 	}
 	
 }
@@ -591,6 +593,71 @@ public class LinkedList {
 		printList();
 	}
 	
+	public void mergeTwoSortedLinkedLists(Node head1,Node head2) {
+		
+		//TimeComplexity O(m+n) ::: Space Complexity O(1)
+		
+		Node temp1= head1, temp2 = head2,prev = null,curr=null;
+		
+		while(temp1!=null && temp2!=null) {
+			
+			if(temp1.data<temp2.data) {
+				if(prev!=null) {
+					prev.next = temp1;
+				}
+			 	prev = temp1;	
+			 	if(temp1 == head1) {
+					head = temp1;
+				}
+				temp1 = temp1.next;
+			}else {
+				if(prev!=null) {
+					prev.next = temp2;
+				}
+				prev = temp2;
+				if(temp1 == head1) {
+					head = temp2;
+				}
+				temp2 = temp2.next;
+			}
+			prev.next = temp2;
+			
+		}
+		
+		if(temp1==null) {
+			prev.next = temp2;
+		}else {
+			prev.next = temp1;
+		}
+		
+		printList();
+		
+	}
+	
+/*	public void printNextGreaterNodeOnRightSide() {
+		
+		System.out.println("\n List after reversing .. ");
+		reverse();
+		Node curr = head.next,max = head;
+		while(curr!=null) {
+			curr.arbit = max;
+			if(curr.data > max.data) {
+				max = curr;
+			}
+			curr = curr.next;
+		}
+		reverse();
+		curr = head;
+		System.out.println("\n printing the next greater elements ");
+		while(curr.next!=null) {
+			System.out.println(curr.data+" -> "+curr.arbit.data);
+			curr = curr.next;
+		}
+		System.out.println(curr.data+" -> \0");
+	}
+
+*/
+	
 	public static void main(String[] args) {
 		
 		LinkedList list = new LinkedList();
@@ -627,9 +694,9 @@ public class LinkedList {
 //		list.moveLastNodeToFirst();
 //		list.isPalindrome();
 
-/*		
+		
 // 		Linked List intersection problem
-
+/*
 		Node head2=null;
 		System.out.println("\n\nEnter the size of the second list : ");
 		scanner = new Scanner(System.in);
@@ -647,15 +714,19 @@ public class LinkedList {
 			System.out.print(temp.data+" ");
 			temp = temp.next;
 		}
+		*/
+//		list.mergeTwoSortedLinkedLists(list.head, head2);
 		
 //		list.head.next.next.next.next = head2.next.next.next.next.next;		
 //		list.intersectionPointOfTwoLists(head2);	
-*/
+
 		
 //		list.segeregateOddAndEvenNodes();
 //		list.multiplyTwoNumbersRepresentedByLL(head2);
 		
-		list.segregateOs1s2s();
+//		list.segregateOs1s2s();
+		
+//		list.printNextGreaterNodeOnRightSide();
 		
 	}
 
