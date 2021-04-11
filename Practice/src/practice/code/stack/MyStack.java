@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Stack;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
+import practice.code.MathUtil;
 import practice.code.queue.MyQueue;
 
 public class MyStack {
@@ -195,6 +198,175 @@ public class MyStack {
 		
 	}
 	
+	public void stockSpanProblem(int arr[],int n) {
+		
+		//Given a list of stock prices.. we have to find the span 
+		//(how many consecutive prices before the current price that are less than the current price)
+		
+		int outArr[] = new int[n];
+		outArr[0]=0;
+		
+		Stack<Integer> stack = new Stack<Integer>();
+		stack.push(0);
+		
+		
+		for(int i=1;i<n;i++) {
+			
+			int item = stack.peek();
+			if(arr[item] < arr[i]) {
+				
+				while( (arr[item] < arr[i]) && !stack.isEmpty() ) {
+					stack.pop();
+					if(!stack.isEmpty()) {
+						item = stack.peek();
+					}
+				}
+				
+				if(stack.isEmpty()) {
+					outArr[i] = i;
+				}else {
+					outArr[i] = i - stack.peek() - 1;
+				}
+				stack.push(i);
+			
+			}else {
+				outArr[i] = 0;
+				stack.push(i);
+			}
+			
+		}
+		
+		System.out.println("The output array is :: ");
+		for(int i=0;i<n;i++) {
+			System.out.print(outArr[i]+" ");
+		}
+		
+	}
+	
+	public boolean balanceParanthesis(char[] arr, int n) {
+		
+		Stack<Character> stack = new Stack<Character>();
+		
+		for(int i=0;i<n;i++) {
+			
+			if(arr[i]=='(' || arr[i] == '{' || arr[i] == '[' ) {
+				stack.push(arr[i]);
+			}
+			else if(arr[i] == ')') {
+				
+				if(!stack.isEmpty() && '(' == stack.peek()) {
+					stack.pop();
+				}else {
+					return false;
+				}
+				
+			}else if (arr[i] == '}') {
+				
+				if(!stack.isEmpty() && '{' == stack.peek()) {
+					stack.pop();
+				}else {
+					return false;
+				}
+				
+			}else if (arr[i] == ']') {
+				
+				if(!stack.isEmpty() && '[' == stack.peek()) {
+					stack.pop();
+				}else {
+					return false;
+				}
+				
+			}
+			
+		}
+		
+		if(stack.isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	public void minNoOfReversalsRequiredToBalance(char arr[],int size) {
+		
+		Stack<Character> stack = new Stack<Character>();
+		
+		for(int i=0;i<size;i++) {
+			
+			if(arr[i] == '{') {
+				stack.push(arr[i]);
+			}
+			else if(arr[i] == '}') {
+				if( !stack.isEmpty() && stack.peek() == '{') {
+					stack.pop();
+				}else {
+					stack.push(arr[i]);
+				}
+			}
+			
+		}
+		
+		int m=0,n=0;
+		while(!stack.isEmpty()) {
+			
+			char cur = stack.pop();
+			if('{' ==  cur) {
+				m++;
+			}else if('}' == cur) {
+				n++;
+			}
+			
+		}
+		int sum=0;
+		if((m+n)%2 != 0) {
+			System.out.println("Cannot be balanced... ");
+			return;
+		}else {
+			sum = (int) (Math.ceil(m/2) + Math.ceil(n/2));
+		}
+		System.out.println("The min. no. of reversals required is "+sum);
+		System.out.println("The max no. of reversals required is "+(m+n));
+	}
+	
+	public void findIfExpressionHasRedundantParanthesis(char arr[],int size) {
+		
+		Stack<Character> stack = new Stack<Character>();
+		
+		for(int i=0;i<size;i++) {
+			
+			if( arr[i] == ')') {
+				
+				if(stack.isEmpty()) {
+					System.out.println("Given string is unbalanced ..");
+					return;
+				}
+				
+				char test = stack.peek();
+				if(test == '(') {
+					System.out.println("Given string has redundant paranthesis");
+					return;
+				}
+				
+				while(!stack.isEmpty() && '(' != stack.peek()) {
+					stack.pop();
+				}
+				stack.pop();
+				
+			}else {
+				stack.push(arr[i]);
+			}
+			
+		}
+		
+		if(!stack.isEmpty()) {
+			System.out.println("Given string is unbalanced ..");
+		}else {
+			System.out.println("Given string doesn't have redundant paranthesis");
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 		
 		MyStack myStack = new MyStack();
@@ -228,7 +400,7 @@ public class MyStack {
 //		System.out.print("\n Popped element is :"+myStack.popWithTwoQueues());
 		
 //		System.out.println("Enter no. of elements:");
-//		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 //		int n = scanner.nextInt();
 //		int arr[] = new int[n]; 
 //		System.out.println("Enter elements of the array:");
@@ -237,7 +409,21 @@ public class MyStack {
 //		}
 		
 //		myStack.findTheNextGreaterElement(arr, n);	
-		myStack.mergeIntervals();
+//		myStack.stockSpanProblem(arr, n);
+		
+		System.out.println("Enter the paranthesis string:");
+		String paranthesisStr = scanner.next();
+
+//		myStack.minNoOfReversalsRequiredToBalance(paranthesisStr.toCharArray(),paranthesisStr.length());
+		
+		myStack.findIfExpressionHasRedundantParanthesis(paranthesisStr.toCharArray(),paranthesisStr.length());
+		
+//		System.out.println(" The balance of given string is "+myStack.balanceParanthesis(paranthesisStr.toCharArray(), paranthesisStr.length()));
+		
+		
+		
+//		myStack.mergeIntervals();
+		
 		
 		
 	}
