@@ -169,19 +169,17 @@ public class BinarySearchTree {
 	}
 	
 	
-	public Node convertToBST(int arr[], int low, int high, Node root) {
+	public Node convertToBST(int arr[], int low, int high) {
 		
 		if(low > high) {
-			return root;
+			return null;
 		}
 		
 		int mid = (low+high)/2;
-		if(root == null) {
-			root = new Node(arr[mid]);
-		}
 		
-		root.left = convertToBST(arr, low, mid-1, root.left);
-		root.right = convertToBST(arr, mid+1, high, root.right);
+		Node root = new Node(arr[mid]); 
+		root.left = convertToBST(arr, low, mid-1);
+		root.right = convertToBST(arr, mid+1, high);
 		
 		return root;
 	}
@@ -196,7 +194,7 @@ public class BinarySearchTree {
 		for(int i=0;i<n;i++) {
 			arr[i] = scanner.nextInt();
 		}
-		Node root = convertToBST(arr,0,n-1,null);
+		Node root = convertToBST(arr,0,n-1);
 		System.out.println("\nThe preorder of obtained tree is: \n");
 		preOrder(root);
 		
@@ -249,12 +247,13 @@ public class BinarySearchTree {
 			System.out.print(" "+binaryTreeKeys[i]);
 		}
 		
-		Node newroot = convertToBST(binaryTreeKeys,0,n-1,null);
+		Node newroot = convertToBST(binaryTreeKeys,0,n-1);
 		System.out.println("\nThe inorder of obtained tree is: \n");
 		inOrder(newroot);
 		
 	}
-
+	
+		
 	public static void main(String[] args) {
 		
 		BinarySearchTree tree = new BinarySearchTree();
@@ -290,6 +289,8 @@ public class BinarySearchTree {
 		
 //		tree.buildBinaryTree();
 //		tree.convertBinaryTreeToBalancedBST(tree.root);
+		
+ 
 	}
 
 }

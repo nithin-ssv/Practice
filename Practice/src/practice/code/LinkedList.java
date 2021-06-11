@@ -601,7 +601,7 @@ public class LinkedList {
 		
 		while(temp1!=null && temp2!=null) {
 			
-			if(temp1.data<temp2.data) {
+			if(temp1.data<=temp2.data) {
 				if(prev!=null) {
 					prev.next = temp1;
 				}

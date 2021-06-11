@@ -10,7 +10,6 @@ public class ArrayPractice {
 	static void rotate(int arr[],int d,int n){
 		
 		int[] tempArr = new int[n];
-		
 		int i,k = 0;
 		
 		for(i=d;i<n;i++) {

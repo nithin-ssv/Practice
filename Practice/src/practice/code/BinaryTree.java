@@ -32,6 +32,15 @@ public class BinaryTree {
 		}
 	}
 	
+	public class StringNode{
+		String data;
+		StringNode left,right;
+		public StringNode(String str) {
+			data = str;
+			left = right = null;
+		}
+	}
+	
 	public Node root;
 	public Node root2;
 	public Node root3;
@@ -86,19 +95,39 @@ public class BinaryTree {
 	
 	public void buildSumTree() {
 		
-		Node newNode = new Node(30);
+		Node newNode = new Node(55);
 		
 		root3 = newNode;
 		
-		root3.left = new Node(5);
-		root3.right = new Node(10);
+		root3.left = new Node(10);
+		root3.right = new Node(25);
 		
-		root3.left.left = new Node(2);
-		root3.left.right = new Node(3);
+		root3.left.left = new Node(9);
+		root3.left.right = new Node(4);
 		
-		root3.right.left = new Node(6);
-		root3.right.right = new Node(4);
+		root3.right.left = new Node(3);
+		root3.right.right = new Node(11);
 		
+		root3.right.left.right = new Node(4);
+		
+	}
+	
+	public void buildSimpleTree() {
+		
+		root = new Node(25);
+		
+		root.left = new Node(32);
+		root.right = new Node(45);
+		
+		root.left.left = new Node(3);
+		root.left.right = new Node(50);
+		
+		root.left.right.left = new Node(4);
+		
+		root.right.left = new Node(2);
+		root.right.right = new Node(15);
+		
+		root.right.left.right = new Node(-5);
 	}
 	
 	public void buildSubTree() {
@@ -108,6 +137,28 @@ public class BinaryTree {
 		subtreeroot.left = new Node(15);
 		subtreeroot.right = new Node(16);
 		
+	}
+	
+	public StringNode exprRoot;
+	public void buildExprTree() {
+		
+		exprRoot = new StringNode("+");
+		
+		exprRoot.left = new StringNode("/");
+		exprRoot.right = new StringNode("-");
+		
+		exprRoot.left.left = new StringNode("*");
+		exprRoot.left.right = new StringNode("5");
+		
+		exprRoot.left.left.left = new StringNode("10");
+		exprRoot.left.left.right = new StringNode("2");
+		
+		exprRoot.right.left = new StringNode("100");
+		exprRoot.right.right = new StringNode("*");
+		
+		exprRoot.right.right.left = new StringNode("3");
+		exprRoot.right.right.right = new StringNode("30");
+	
 	}
 	
 	public boolean areIdenticalTrees(Node root1, Node root2) {
@@ -1075,12 +1126,259 @@ public class BinaryTree {
 		
 	}
 	
+	public void constructBinaryTreeFromPreAndInOrders() {
+		
+		int[] preOrderArr = new int[] {3,9,20,15,7};
+		int[] inOrderArr = new int[] {9,3,15,20,7};
+		
+		Node root = constructTreeFromPreAndIn(preOrderArr, inOrderArr, 0, inOrderArr.length-1);
+		
+		System.out.println("The inorder of the resulting tree is : \n");
+		inOrder(root);
+	}
+	
+	public int preOrderIndex = -1;
+	public Node constructTreeFromPreAndIn(int[] preOrder, int[] inOrder, int inStart, int inEnd) {
+		
+		if(inStart > inEnd) {
+			return null;
+		}
+		
+		if(preOrderIndex + 1 > preOrder.length - 1) {
+			return null;
+		}
+		
+		int item = preOrder[++preOrderIndex];
+		Node root = new Node(item);
+		
+		int mid = searchInInOrderArr(inOrder, inStart, inEnd, item);
+		
+		root.left = constructTreeFromPreAndIn(preOrder, inOrder, inStart, mid-1);
+		root.right = constructTreeFromPreAndIn(preOrder, inOrder, mid+1, inEnd );
+		
+		return root;
+	}
+	
+	public int searchInInOrderArr(int[] inOrder, int inStart,int inEnd, int item) {
+		
+		for(int i=inStart; i<= inEnd; i++ ) {
+			if(inOrder[i] == item) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public String evaluateExpressionTree(StringNode root) {
+		
+		if(root == null) {
+			return null;
+		}
+		
+		if(root.left == null && root.right == null) {
+			return root.data;
+		}
+		
+		String op1 = evaluateExpressionTree(root.left);
+		String op2 = evaluateExpressionTree(root.right);
+		
+		if(op1 == null || op2 == null) {
+			return null;
+		}
+		
+		Integer opr1 = Integer.parseInt(op1);
+		Integer opr2 = Integer.parseInt(op2);
+		Integer sum = 0;
+		
+		switch(root.data) {
+			case "+": sum =  opr1 + opr2; break;
+			case "-": sum =  opr1 - opr2; break;
+			case "*": sum =  opr1 * opr2; break;
+			case "/": sum =  opr1 / opr2; break;
+		}
+		
+		return sum+"";
+	}
+	
+	public void printExtremeNodesAtEachLevelInAlternateFashion(Node root) {
+		
+		Stack<Node> s1 = new Stack<Node>();
+		Stack<Node> s2 = new Stack<Node>();
+		
+		s1.add(root);
+		
+		List<Integer> output = new ArrayList<Integer>();
+		
+		while(!s1.isEmpty() || !s2.isEmpty()) {
+			
+			Integer val=0;
+			
+			while(!s1.isEmpty()) {
+				
+				Node item = s1.pop();
+				
+				if(item.right != null) {
+					s2.push(item.right);
+				}
+				
+				if(item.left!=null) {
+					s2.push(item.left);
+				}
+				
+				val = item.data;
+			}
+			output.add(val);
+			if(s2.isEmpty()) {
+				break;
+			}
+			while(!s2.isEmpty()) {
+				
+				Node item = s2.pop();
+				
+				if(item.left != null) {
+					s1.push(item.left);
+				}
+				
+				if(item.right != null) {
+					s1.push(item.right);
+				}
+				
+				val = item.data;
+			}
+			output.add(val);
+			
+		}
+		
+		System.out.println("The extreme nodes at each level in alternate fashion are >>\n");
+		for(Integer i : output) {
+			System.out.print(i+" ");
+		}
+	}
+	
+	public Node convertBinaryTreeIntoTreeHavingChildSumProperty(Node root) {
+		//Lecture: 86
+		
+		if(root == null || (root.left == null && root.right == null)) {
+			return root;
+		}
+		
+		Node left = convertBinaryTreeIntoTreeHavingChildSumProperty(root.left);
+		Node right = convertBinaryTreeIntoTreeHavingChildSumProperty(root.right);
+		
+		int leftsum=0,rightsum=0,diff=0;
+		
+		if(left!=null) {
+			leftsum = left.data;
+		}
+		if(right!=null) {
+			rightsum = right.data;
+		}
+		
+		if(leftsum + rightsum >= root.data) {
+			root.data = leftsum + rightsum;
+		}else {
+			diff = root.data - rightsum;
+			if(left!=null) {
+				left.data = diff;
+				root.left = propagateDown(left);
+			}else if(right!=null) {
+				right.data = diff;
+				right = propagateDown(right);
+			}
+			
+		}
+		
+		return root;
+	}
+	
+	public Node propagateDown(Node root) {
+		
+		if(root == null || (root.left == null  && root.right == null )) {
+			return root;
+		}
+		
+		if(root.left!=null ) {
+			if(root.right != null) {
+				root.left.data = root.data - root.right.data;
+			}else {
+				root.left.data = root.data;
+			}
+			root.left = propagateDown(root.left);
+		}else {
+			root.right.data = root.data;
+			root.right = propagateDown(root.right);
+		}
+		
+		return root;
+	}
+	
+	public void productOfTheSumsOfNodesAtEachLevel(Node root) {
+		//Lecture 88
+		
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(root);
+		int product = 1;
+		
+		while(!queue.isEmpty()) {
+			
+			int count = queue.size();
+			int sum = 0;
+			while(count>0) {
+				
+				Node item = queue.remove();
+				sum = sum + item.data;
+				
+				if(item.left != null) {
+					queue.add(item.left);
+				}
+				if(item.right != null) {
+					queue.add(item.right);
+				}
+				count --;
+			}
+			
+			product = product*sum;
+			
+		}
+		
+		System.out.println("The product of the sums of the nodes at each level is :\n "+product);
+	}
+	
+	public int maxDiff = Integer.MIN_VALUE;
+
+	public int minValueInTree(Node root) {
+		
+		//Lecture: 90
+		
+		if(root == null) {
+			return Integer.MAX_VALUE;
+		}
+		
+		if(root.left == null && root.right == null) {
+			return root.data;
+		}
+		
+		int leftMin = minValueInTree(root.left);
+		int rightMin = minValueInTree(root.right);
+		
+		int min = (leftMin < rightMin) ? leftMin: rightMin;
+		
+		int diff = root.data - min;
+		
+		if(diff > maxDiff) {
+			maxDiff = diff;
+		}
+		
+		return (min<root.data) ? min: root.data;
+		
+	}
 	public static void main(String[] args) {
 		
 		BinaryTree tree = new BinaryTree();
-		tree.buildTree();
+//		tree.buildTree();
 //		tree.buildSecondTree();
 //		tree.buildSumTree();
+		tree.buildSimpleTree();
 //		tree.buildTestTree();
 //		tree.buildSubTree();
 		
@@ -1170,8 +1468,24 @@ public class BinaryTree {
 		
 //		tree.printLeafNodePaths(tree.root, new int[tree.countTheNodes(tree.root)], -1);
 		
-		System.out.println("\nThe nodes printed in spiral form of level order:\n");
-		tree.printLevelOrderInSpiralOrder(tree.root);
+//		System.out.println("\nThe nodes printed in spiral form of level order:\n");
+//		tree.printLevelOrderInSpiralOrder(tree.root);
+		
+//		tree.constructBinaryTreeFromPreAndInOrders();
+		
+//		tree.buildExprTree();
+//		System.out.print("The value of the expression tree is :"+tree.evaluateExpressionTree(tree.exprRoot));
+		
+//		tree.printExtremeNodesAtEachLevelInAlternateFashion(tree.root);
+		
+//		tree.convertBinaryTreeIntoTreeHavingChildSumProperty(tree.root3);
+//		tree.preOrder(tree.root3);
+		
+//		tree.productOfTheSumsOfNodesAtEachLevel(tree.root);
+		
+//		tree.minValueInTree(tree.root);
+//		System.out.println("The maximum of the difference between any node and it's ancestor in given tree is: "+tree.maxDiff);
+		
 	}
 	
 }
